@@ -21,6 +21,8 @@
         <a href="#events" class="hover:text-yellow-400">Events</a>
         <a href="#sponsors" class="hover:text-yellow-400">Sponsors</a>
         <a href="#membership" class="hover:text-yellow-400">Membership</a>
+        <a href="#enrollment" class="hover:text-yellow-400">Enrollment</a>
+        <a href="#payment-verify" class="hover:text-yellow-400">Payment</a>
         <a href="#gallery" class="hover:text-yellow-400">Gallery</a>
         <a href="#contact" class="hover:text-yellow-400">Contact</a>
         <a href="#donate" class="bg-yellow-500 text-blue-900 px-4 py-2 rounded font-bold hover:bg-yellow-400">Donate</a>
@@ -168,11 +170,159 @@
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-3xl font-bold mb-4">Join the Club</h2>
       <p class="text-gray-600 mb-6">Become an active player or supporting patron of AVS Gorimedu Brothers Pétanque Club.</p>
-      <a href="#contact" class="bg-emerald-900 text-white px-6 py-2 rounded font-bold hover:bg-emerald-800">Apply for Membership</a>
+      <a href="#enrollment" class="bg-emerald-900 text-white px-6 py-2 rounded font-bold hover:bg-emerald-800">Apply for Membership</a>
     </div>
   </section>
 
-  <!-- 6. Gallery Page -->
+  <!-- 6. Enrollment Page -->
+  <section id="enrollment" class="max-w-3xl mx-auto py-12 px-4">
+    <div class="bg-white p-8 rounded-lg shadow-md border-t-4 border-blue-900">
+      <h2 class="text-2xl font-bold text-blue-900 text-center mb-6">AVS Pétanque Club - Member Enrollment</h2>
+      
+      <form id="enrollmentForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Full Name</label>
+          <input type="text" name="name" required class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-900">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1">WhatsApp Mobile No.</label>
+            <input type="tel" name="phone" placeholder="91XXXXXXXXXX" required class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-900">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Membership Category</label>
+            <select name="membershipType" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-900">
+              <option value="Monthly">Monthly (₹500 / Month)</option>
+              <option value="Lifetime">Lifetime Member</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Address</label>
+          <textarea name="address" rows="2" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-900"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full bg-blue-900 text-white font-bold py-2 rounded hover:bg-blue-800 transition">
+          Submit Enrollment Application
+        </button>
+      </form>
+      
+      <div id="statusMsg" class="hidden mt-4 text-center font-semibold text-green-600"></div>
+    </div>
+  </section>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxDlM-mLxRiNEjoUwffBVfwyr8D9179xWFeFk5hdrXm0Qr30xWDzCs-BOYFgL6-WT76BQ/exec';
+    const form = document.forms['enrollmentForm'];
+    const statusMsg = document.getElementById('statusMsg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('submitBtn').innerText = "Verifying...";
+      
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => response.text())
+        .then(result => {
+          statusMsg.classList.remove('hidden');
+          
+          if (result.trim() === "DUPLICATE") {
+            statusMsg.className = "mt-4 text-center font-semibold text-red-600";
+            statusMsg.innerText = "Error: This WhatsApp number is already registered!";
+          } else {
+            statusMsg.className = "mt-4 text-center font-semibold text-green-600";
+            statusMsg.innerText = "Application submitted successfully! Welcome to AVS Pétanque Club.";
+            form.reset();
+          }
+          document.getElementById('submitBtn').innerText = "Submit Enrollment Application";
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          document.getElementById('submitBtn').innerText = "Submit Enrollment Application";
+        });
+    });
+  </script>
+
+  <!-- Payment Proof Verification Form -->
+  <section id="payment-verify" class="max-w-3xl mx-auto py-12 px-4">
+    <div class="bg-white p-8 rounded-lg shadow-md border-t-4 border-green-600">
+      <h2 class="text-2xl font-bold text-gray-800 text-center mb-2">Submit Monthly Fee Payment Proof</h2>
+      <p class="text-xs text-center text-gray-500 mb-6">Enter your registered WhatsApp number and UPI reference number to update your payment status.</p>
+      
+      <form id="paymentForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Registered WhatsApp Number</label>
+          <input type="tel" name="phone" placeholder="91XXXXXXXXXX" required class="w-full border p-2 rounded focus:ring-2 focus:ring-green-600">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Month Paid For</label>
+            <select name="month" class="w-full border p-2 rounded focus:ring-2 focus:ring-green-600">
+              <option value="January 2026">January 2026</option>
+              <option value="February 2026">February 2026</option>
+              <option value="March 2026">March 2026</option>
+              <option value="April 2026">April 2026</option>
+              <option value="May 2026">May 2026</option>
+              <option value="June 2026">June 2026</option>
+              <option value="July 2026">July 2026</option>
+              <option value="August 2026">August 2026</option>
+              <option value="September 2026" selected>September 2026</option>
+              <option value="October 2026">October 2026</option>
+              <option value="November 2026">November 2026</option>
+              <option value="December 2026">December 2026</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">UPI Transaction / UTR No.</label>
+            <input type="text" name="utr" placeholder="12-digit UTR No." required class="w-full border p-2 rounded focus:ring-2 focus:ring-green-600">
+          </div>
+        </div>
+
+        <button type="submit" id="paySubmitBtn" class="w-full bg-green-600 text-white font-bold py-2 rounded hover:bg-green-700 transition">
+          Submit Payment Verification
+        </button>
+      </form>
+      
+      <div id="payStatusMsg" class="hidden mt-4 text-center font-semibold text-green-600"></div>
+    </div>
+  </section>
+
+  <script>
+    const payScriptURL = 'https://script.google.com/macros/s/AKfycbxDlM-mLxRiNEjoUwffBVfwyr8D9179xWFeFk5hdrXm0Qr30xWDzCs-BOYFgL6-WT76BQ/exec';
+    const payForm = document.forms['paymentForm'];
+    const payStatusMsg = document.getElementById('payStatusMsg');
+
+    payForm.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('paySubmitBtn').innerText = "Verifying...";
+      
+      const formData = new FormData(payForm);
+      formData.append("action", "verifyPayment");
+
+      fetch(payScriptURL, { method: 'POST', body: formData})
+        .then(response => response.text())
+        .then(result => {
+          payStatusMsg.classList.remove('hidden');
+          if (result.trim() === "NOT_FOUND") {
+            payStatusMsg.className = "mt-4 text-center font-semibold text-red-600";
+            payStatusMsg.innerText = "Error: WhatsApp number not found in member database!";
+          } else {
+            payStatusMsg.className = "mt-4 text-center font-semibold text-green-600";
+            payStatusMsg.innerText = "Payment submitted successfully! Status updated to PAID.";
+            payForm.reset();
+          }
+          document.getElementById('paySubmitBtn').innerText = "Submit Payment Verification";
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          document.getElementById('paySubmitBtn').innerText = "Submit Payment Verification";
+        });
+    });
+  </script>
+
+  <!-- 7. Gallery Page -->
   <section id="gallery" class="max-w-7xl mx-auto py-12 px-4" style="background-image: url('public/header%20background.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="rounded-2xl bg-emerald-900/75 p-6 md:p-8 text-white">
       <h2 class="text-3xl font-bold text-center mb-8">Media Gallery</h2>
@@ -189,7 +339,7 @@
     </div>
   </section>
 
-  <!-- 7. Contact Page -->
+  <!-- 8. Contact Page -->
   <section id="contact" class="bg-gray-100 py-12 px-4">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold text-center mb-8">Contact Us</h2>
@@ -201,7 +351,7 @@
     </div>
   </section>
 
-  <!-- 8. Donation & Fundraising Page -->
+  <!-- 9. Donation & Fundraising Page -->
   <section id="donate" class="max-w-4xl mx-auto py-12 px-4">
     <h2 class="text-3xl font-bold text-center mb-4">Support & Raise Funds</h2>
     <p class="text-center text-gray-600 mb-8">Your contributions support ground preparation, officiating, equipment, and youth sports development.</p>
