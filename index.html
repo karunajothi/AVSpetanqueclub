@@ -322,22 +322,116 @@
     });
   </script>
 
-  <!-- 7. Gallery Page -->
-  <section id="gallery" class="max-w-7xl mx-auto py-12 px-4" style="background-image: url('public/header%20background.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-    <div class="rounded-2xl bg-emerald-900/75 p-6 md:p-8 text-white">
-      <h2 class="text-3xl font-bold text-center mb-8">Media Gallery</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <figure class="bg-white/10 rounded-xl overflow-hidden shadow-lg border border-white/20">
-          <img src="public/1st-year-tourn.jpeg" alt="1st year tournament" class="w-full h-72 object-cover">
-          <figcaption class="p-4 text-sm font-medium text-white">1st Year Tournament</figcaption>
-        </figure>
-        <figure class="bg-white/10 rounded-xl overflow-hidden shadow-lg border border-white/20">
-          <img src="public/avs-friendship-trophy.jpeg" alt="AVS friendship trophy" class="w-full h-72 object-cover">
-          <figcaption class="p-4 text-sm font-medium text-white">AVS Friendship Trophy</figcaption>
-        </figure>
+  <!-- Media Gallery Section (Green Theme - 2 Image Layout) -->
+  <section id="gallery" class="max-w-6xl mx-auto py-12 px-4">
+    <div class="bg-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white">
+      <h2 class="text-3xl font-bold text-center mb-2">Media Gallery</h2>
+      <p id="gallerySubtitle" class="text-center text-emerald-100 mb-6 text-sm">Highlights from our 12 major tournaments</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="relative h-64 md:h-80 bg-emerald-950 rounded-xl overflow-hidden shadow-inner border border-emerald-700">
+          <img id="img1" src="public/event1.jpeg" alt="Event Photo 1" class="w-full h-full object-cover transition-opacity duration-300" onerror="this.src='public/1st-year-tourn.jpeg'">
+          <span id="label1" class="absolute bottom-3 left-3 bg-emerald-900/80 backdrop-blur text-white text-xs px-3 py-1 rounded-md font-medium">Photo 1</span>
+        </div>
+
+        <div class="relative h-64 md:h-80 bg-emerald-950 rounded-xl overflow-hidden shadow-inner border border-emerald-700">
+          <img id="img2" src="public/avs-friendship-trophy.jpeg" alt="Event Photo 2" class="w-full h-full object-cover transition-opacity duration-300" onerror="this.src='public/1st-year-tourn.jpeg'">
+          <span id="label2" class="absolute bottom-3 left-3 bg-emerald-900/80 backdrop-blur text-white text-xs px-3 py-1 rounded-md font-medium">Photo 2</span>
+        </div>
+      </div>
+
+      <div class="bg-emerald-900/60 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 border border-emerald-700">
+        <div>
+          <span id="eventBadge" class="bg-yellow-400 text-emerald-950 text-xs font-bold px-2.5 py-0.5 rounded-full">Event 1 of 12</span>
+          <h3 id="eventTitle" class="text-xl font-bold mt-1 text-white">Raja Rockerz Tournament</h3>
+          <p id="eventDesc" class="text-xs text-emerald-200 mt-0.5">Organised by Raja Rockerz, Pitchaiveeranpet (13/02/2026 & 14/02/2026)</p>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <button type="button" onclick="prevEvent()" class="bg-emerald-700 hover:bg-yellow-400 hover:text-emerald-950 text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+            ← Prev
+          </button>
+          <div id="carouselDots" class="flex space-x-1.5"></div>
+          <button type="button" onclick="nextEvent()" class="bg-emerald-700 hover:bg-yellow-400 hover:text-emerald-950 text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+            Next →
+          </button>
+        </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const eventsData = [
+      { id: 1, title: "Raja Rockerz Tournament", desc: "Organised by Raja Rockerz, Pitchaiveeranpet (13/02/2026 & 14/02/2026)", img1: "public/event1.jpeg", img2: "public/event1.jpeg", lbl1: "Event Photo", lbl2: "Event Highlight" },
+      { id: 2, title: "Brothers Petanque Club Tournament", desc: "Organised by Brothers Petanque Club, Kombakkam (21/02/2026 & 22/02/2026)", img1: "public/event2.jpeg", img2: "public/event2.jpeg", lbl1: "Match Action", lbl2: "Participants" },
+      { id: 3, title: "Thanthai Periyar Sports Club Tournament", desc: "Participated with 09 teams (28/02/2026 & 01/03/2026)", img1: "public/event3.jpeg", img2: "public/event3.jpeg", lbl1: "Knockout Round", lbl2: "Players" },
+      { id: 4, title: "Friendly Match vs NR AKD Petanque Club", desc: "Friendly match played on 08/03/2026", img1: "public/event4.jpeg", img2: "public/event4.jpeg", lbl1: "Ground Photos", lbl2: "Teams" },
+      { id: 5, title: "Inter Club Knock Out Tournament", desc: "Conducted internal club tournament on 05/04/2026", img1: "public/event5.jpeg", img2: "public/event5.jpeg", lbl1: "Semi-Finals", lbl2: "Finalists" },
+      { id: 6, title: "Lucky Doubles Tournament", desc: "Winners: JK & Aravind (02/05/2026 & 03/05/2026)", img1: "public/event6.jpeg", img2: "public/event6.jpeg", lbl1: "Winners Ceremony", lbl2: "Runners" },
+      { id: 7, title: "AVS Premier League", desc: "Champions: Mohan & Venkat (09/05/2026 to 30/05/2026)", img1: "public/event7.jpeg", img2: "public/event7.jpeg", lbl1: "League Matches", lbl2: "Champions" },
+      { id: 8, title: "AVS Interclub Tournament (SRI TROPHY)", desc: "Sponsored by Alex (20/06/2026 & 21/06/2026)", img1: "public/event8.jpeg", img2: "public/event8.jpeg", lbl1: "Trophy Presentation", lbl2: "Group Photo" },
+      { id: 9, title: "AVS Inter Club Tournament", desc: "Winners: Rajesh & Mohan (12/07/2026)", img1: "public/event9.jpeg", img2: "public/event9.jpeg", lbl1: "Winners", lbl2: "Runners Up" },
+      { id: 10, title: "NPAP State Championship", desc: "Participated on 01/08/2026 & 02/08/2026", img1: "public/event10.jpeg", img2: "public/event10.jpeg", lbl1: "State Event", lbl2: "AVS Squad" },
+      { id: 11, title: "Friendship Trophy (Triples)", desc: "Winners: JK, Ram & Ilango (08/08/2026 & 09/08/2026)", img1: "public/event11.jpeg", img2: "public/event11.jpeg", lbl1: "Ground Action", lbl2: "Friendship Trophy" },
+      { id: 12, title: "Independence Day Trophy", desc: "Sponsored by Prabhu (15/08/2026 & 16/08/2026)", img1: "public/event12.jpeg", img2: "public/event12.jpeg", lbl1: "Celebrations", lbl2: "Trophy Winners" }
+    ];
+
+    let currentIndex = 0;
+    let autoRotateTimer;
+
+    function updateGallery() {
+      const item = eventsData[currentIndex];
+      document.getElementById("img1").src = item.img1;
+      document.getElementById("img2").src = item.img2;
+      document.getElementById("label1").innerText = item.lbl1;
+      document.getElementById("label2").innerText = item.lbl2;
+      document.getElementById("eventBadge").innerText = `Event ${item.id} of 12`;
+      document.getElementById("eventTitle").innerText = item.title;
+      document.getElementById("eventDesc").innerText = item.desc;
+      renderDots();
+    }
+
+    function renderDots() {
+      const dotsContainer = document.getElementById("carouselDots");
+      dotsContainer.innerHTML = "";
+      eventsData.forEach((_, idx) => {
+        const dot = document.createElement("div");
+        dot.className = `h-2 rounded-full cursor-pointer transition-all ${idx === currentIndex ? 'bg-yellow-400 w-5' : 'bg-emerald-600 w-2'}`;
+        dot.onclick = () => {
+          currentIndex = idx;
+          updateGallery();
+          resetTimer();
+        };
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function nextEvent() {
+      currentIndex = (currentIndex + 1) % eventsData.length;
+      updateGallery();
+      resetTimer();
+    }
+
+    function prevEvent() {
+      currentIndex = (currentIndex - 1 + eventsData.length) % eventsData.length;
+      updateGallery();
+      resetTimer();
+    }
+
+    function startTimer() {
+      autoRotateTimer = setInterval(nextEvent, 4000);
+    }
+
+    function resetTimer() {
+      clearInterval(autoRotateTimer);
+      startTimer();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateGallery();
+      startTimer();
+    });
+  </script>
 
   <!-- 8. Contact Page -->
   <section id="contact" class="bg-gray-100 py-12 px-4">
