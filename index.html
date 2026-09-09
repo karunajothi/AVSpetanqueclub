@@ -12,26 +12,64 @@
 
   <!-- Navigation -->
   <nav class="text-white sticky top-0 z-50 shadow-md bg-emerald-900">
-    <div class="max-w-[1600px] mx-auto px-5 py-2.5 flex justify-between items-center">
-      <div class="flex items-center space-x-3 min-w-0">
-        <img src="public/avs-logo.png" alt="AVS Logo" class="h-12 w-12 md:h-14 md:w-14 object-contain flex-shrink-0">
-        <h1 class="font-bold text-xl md:text-3xl leading-none">AVS Pétanque Club</h1>
+    <div class="max-w-[1600px] mx-auto px-3 py-2 md:px-5">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center space-x-3 min-w-0">
+          <img src="public/avs-logo.png" alt="AVS Logo" class="h-9 w-9 md:h-14 md:w-14 object-contain flex-shrink-0">
+          <h1 class="font-bold text-base sm:text-lg md:text-3xl leading-none">AVS Pétanque Club</h1>
+        </div>
+
+        <button id="mobileMenuToggle" type="button" aria-label="Toggle navigation menu" class="md:hidden inline-flex items-center justify-center rounded bg-yellow-500 p-2 text-emerald-950 shadow-sm">
+          <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
-      <div class="hidden md:flex items-center space-x-5 text-base font-medium tracking-normal">
-        <a href="#home" class="hover:text-yellow-400">Home</a>
-        <a href="#committee" class="hover:text-yellow-400">Committee</a>
-        <a href="#events" class="hover:text-yellow-400">Events</a>
-        <a href="#sponsors" class="hover:text-yellow-400">Sponsors</a>
-        <a href="#membership" class="hover:text-yellow-400">Membership</a>
-        <a href="#enrollment" class="hover:text-yellow-400">Enrollment</a>
-        <a href="#payment-verify" class="hover:text-yellow-400">Payment</a>
-        <a href="dashboard.html" class="hover:text-yellow-400">Member Portal</a>
-        <a href="#gallery" class="hover:text-yellow-400">Gallery</a>
-        <a href="#contact" class="hover:text-yellow-400">Contact</a>
-        <a href="#donate" class="bg-yellow-500 text-blue-900 px-4 py-2 rounded font-bold hover:bg-yellow-400">Donate</a>
+
+      <div id="navLinks" class="hidden md:flex md:flex-wrap md:items-center md:justify-end md:gap-3 mt-2 md:mt-0 text-[10px] sm:text-xs md:text-base font-medium tracking-normal">
+        <a href="#home" class="hover:text-yellow-400 whitespace-nowrap">Home</a>
+        <a href="#committee" class="hover:text-yellow-400 whitespace-nowrap">Committee</a>
+        <a href="#events" class="hover:text-yellow-400 whitespace-nowrap">Events</a>
+        <a href="#sponsors" class="hover:text-yellow-400 whitespace-nowrap">Sponsors</a>
+        <a href="#membership" class="hover:text-yellow-400 whitespace-nowrap">Membership</a>
+        <a href="#enrollment" class="hover:text-yellow-400 whitespace-nowrap">Enrollment</a>
+        <a href="#payment-verify" class="hover:text-yellow-400 whitespace-nowrap">Payment</a>
+        <a href="dashboard.html" class="hover:text-yellow-400 whitespace-nowrap">Member Portal</a>
+        <a href="#gallery" class="hover:text-yellow-400 whitespace-nowrap">Gallery</a>
+        <a href="#contact" class="hover:text-yellow-400 whitespace-nowrap">Contact</a>
+        <a href="#donate" class="bg-yellow-500 text-blue-900 px-3 py-1.5 md:px-4 md:py-2 rounded font-bold hover:bg-yellow-400 whitespace-nowrap">Donate</a>
+      </div>
+
+      <div id="mobileNavPanel" class="hidden md:hidden mt-2 rounded-lg border border-emerald-700 bg-emerald-950/90 p-2 shadow-lg">
+        <div class="flex flex-col gap-1 text-sm font-medium">
+          <a href="#home" class="px-2 py-1.5 rounded hover:bg-emerald-800">Home</a>
+          <a href="#committee" class="px-2 py-1.5 rounded hover:bg-emerald-800">Committee</a>
+          <a href="#events" class="px-2 py-1.5 rounded hover:bg-emerald-800">Events</a>
+          <a href="#sponsors" class="px-2 py-1.5 rounded hover:bg-emerald-800">Sponsors</a>
+          <a href="#membership" class="px-2 py-1.5 rounded hover:bg-emerald-800">Membership</a>
+          <a href="#enrollment" class="px-2 py-1.5 rounded hover:bg-emerald-800">Enrollment</a>
+          <a href="#payment-verify" class="px-2 py-1.5 rounded hover:bg-emerald-800">Payment</a>
+          <a href="dashboard.html" class="px-2 py-1.5 rounded hover:bg-emerald-800">Member Portal</a>
+          <a href="#gallery" class="px-2 py-1.5 rounded hover:bg-emerald-800">Gallery</a>
+          <a href="#contact" class="px-2 py-1.5 rounded hover:bg-emerald-800">Contact</a>
+          <a href="#donate" class="mt-1 rounded bg-yellow-500 px-2 py-1.5 text-center font-bold text-blue-900">Donate</a>
+        </div>
       </div>
     </div>
   </nav>
+
+  <div id="installBanner" class="hidden bg-emerald-900 text-white border-b border-emerald-700 shadow-md">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <p class="text-sm font-semibold">Install AVS Pétanque Club on your device</p>
+        <p class="text-xs text-emerald-100">Get quick access to the member portal and gallery from your home screen.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="installBtn" type="button" class="bg-yellow-400 text-emerald-950 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-300 transition">Install App</button>
+        <button id="dismissInstall" type="button" class="text-sm text-emerald-100 hover:text-white">Dismiss</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 1. Home Page -->
   <section id="home" class="relative overflow-hidden text-white" style="background-image: url('public/header-background.png'); background-size: cover; background-position: center center; background-repeat: no-repeat; min-height: 440px;">
@@ -480,6 +518,50 @@
   <footer class="bg-emerald-900 text-white text-center py-4 text-xs">
     © 2026 AVS Gorimedu Brothers Pétanque Club (Regn. No. 220/2025). All Rights Reserved.
   </footer>
+
+  <script>
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const mobileNavPanel = document.getElementById('mobileNavPanel');
+
+    if (mobileMenuToggle && navLinks && mobileNavPanel) {
+      mobileMenuToggle.addEventListener('click', () => {
+        const isHidden = mobileNavPanel.classList.contains('hidden');
+        mobileNavPanel.classList.toggle('hidden', !isHidden);
+      });
+    }
+
+    let deferredPrompt = null;
+    const installBanner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+    const dismissInstall = document.getElementById('dismissInstall');
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+      installBanner.classList.remove('hidden');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installBanner.classList.add('hidden');
+      deferredPrompt = null;
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        return;
+      }
+
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBanner.classList.add('hidden');
+    });
+
+    dismissInstall.addEventListener('click', () => {
+      installBanner.classList.add('hidden');
+    });
+  </script>
 
 </body>
 </html>
