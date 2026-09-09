@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#065f46">
   <title>AVS Gorimedu Brothers Pétanque Club</title>
+  <link rel="manifest" href="manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -23,6 +25,7 @@
         <a href="#membership" class="hover:text-yellow-400">Membership</a>
         <a href="#enrollment" class="hover:text-yellow-400">Enrollment</a>
         <a href="#payment-verify" class="hover:text-yellow-400">Payment</a>
+        <a href="dashboard.html" class="hover:text-yellow-400">Member Portal</a>
         <a href="#gallery" class="hover:text-yellow-400">Gallery</a>
         <a href="#contact" class="hover:text-yellow-400">Contact</a>
         <a href="#donate" class="bg-yellow-500 text-blue-900 px-4 py-2 rounded font-bold hover:bg-yellow-400">Donate</a>
@@ -170,7 +173,10 @@
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-3xl font-bold mb-4">Join the Club</h2>
       <p class="text-gray-600 mb-6">Become an active player or supporting patron of AVS Gorimedu Brothers Pétanque Club.</p>
-      <a href="#enrollment" class="bg-emerald-900 text-white px-6 py-2 rounded font-bold hover:bg-emerald-800">Apply for Membership</a>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#enrollment" class="bg-emerald-900 text-white px-6 py-2 rounded font-bold hover:bg-emerald-800">Apply for Membership</a>
+        <a href="dashboard.html" class="bg-white text-emerald-900 border border-emerald-900 px-6 py-2 rounded font-bold hover:bg-emerald-50">Open Member Portal</a>
+      </div>
     </div>
   </section>
 
@@ -217,6 +223,14 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxDlM-mLxRiNEjoUwffBVfwyr8D9179xWFeFk5hdrXm0Qr30xWDzCs-BOYFgL6-WT76BQ/exec';
     const form = document.forms['enrollmentForm'];
     const statusMsg = document.getElementById('statusMsg');
+
+    if (localStorage.getItem('isMember') === 'true') {
+      window.location.href = 'dashboard.html';
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
 
     form.addEventListener('submit', e => {
       e.preventDefault();

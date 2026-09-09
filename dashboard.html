@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#065f46">
+  <title>Member Dashboard - AVS Petanque Club</title>
+  <link rel="manifest" href="manifest.json">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <nav class="bg-emerald-800 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="font-bold text-lg">AVS Member Portal</h1>
+    <button onclick="logout()" class="text-xs bg-emerald-950 px-3 py-1 rounded">Logout</button>
+  </nav>
+
+  <div class="max-w-md mx-auto mt-8 p-6 bg-white rounded-xl shadow-lg">
+    <div id="loginStep">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Member Portal Login</h2>
+      <input type="tel" id="loginPhone" placeholder="Enter Registered Phone (e.g. 9876543210)" class="w-full border p-2 rounded mb-4">
+      <button onclick="checkMemberStatus()" class="w-full bg-emerald-700 text-white font-bold py-2 rounded">Access Dashboard</button>
+      <p id="loginError" class="text-red-600 text-xs mt-2 text-center hidden"></p>
+    </div>
+
+    <div id="memberDashboard" class="hidden">
+      <div class="border-b pb-4 mb-4">
+        <h3 id="memberName" class="text-lg font-bold text-emerald-900"></h3>
+        <p id="memberType" class="text-xs text-gray-500"></p>
+        <div class="mt-2 flex justify-between items-center bg-gray-50 p-3 rounded">
+          <span class="text-sm font-semibold">Current Month Status:</span>
+          <span id="currentStatus" class="font-bold text-sm px-2 py-1 rounded"></span>
+        </div>
+      </div>
+
+      <div id="paymentSection" class="hidden space-y-4">
+        <h4 class="font-bold text-gray-700">Pay Monthly Subscription (₹500)</h4>
+
+        <a id="gpayBtn" href="#" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded shadow">
+          Pay ₹500 via GPay / UPI
+        </a>
+
+        <div class="border-t pt-4 mt-4">
+          <label class="block text-xs font-semibold mb-1">Enter UPI Reference / UTR No. After Payment:</label>
+          <input type="text" id="utrInput" placeholder="12-digit UTR Number" class="w-full border p-2 rounded mb-2 text-sm">
+          <button onclick="submitPaymentProof()" class="w-full bg-emerald-800 text-white text-sm font-bold py-2 rounded">
+            Confirm & Update Payment
+          </button>
+        </div>
+      </div>
+
+      <div id="exemptSection" class="hidden text-center py-4 text-emerald-700 font-semibold text-sm">
+        🎉 You are a Lifetime Member. Monthly subscription is exempt!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDlM-mLxRiNEjoUwffBVfwyr8D9179xWFeFk5hdrXm0Qr30xWDzCs-BOYFgL6-WT76BQ/exec';
+    let loggedInUser = null;
+
+    function checkMemberStatus() {
+      const phone = document.getElementById('loginPhone').value.trim();
+      if (!phone) return;
+
+      fetch(`${SCRIPT_URL}?action=checkStatus&phone=${phone}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.found) {
+            loggedInUser = data;
+            localStorage.setItem('memberPhone', phone);
+            localStorage.setItem('isMember', 'true');
+            showDashboard(data);
+          } else {
+            const errorBox = document.getElementById('loginError');
+            errorBox.innerText = 'Member not found. Please check phone number.';
+            errorBox.classList.remove('hidden');
+          }
+        })
+        .catch((error) => {
+          const errorBox = document.getElementById('loginError');
+          errorBox.innerText = 'Unable to verify member. Please try again.';
+          errorBox.classList.remove('hidden');
+          console.error(error);
+        });
+    }
+
+    function showDashboard(data) {
+      document.getElementById('loginStep').classList.add('hidden');
+      document.getElementById('memberDashboard').classList.remove('hidden');
+      document.getElementById('memberName').innerText = data.name;
+      document.getElementById('memberType').innerText = 'Membership: ' + data.type;
+
+      const statusEl = document.getElementById('currentStatus');
+      statusEl.innerText = data.status;
+
+      if (data.status === 'PAID') {
+        statusEl.className = 'font-bold text-sm px-2 py-1 rounded bg-green-100 text-green-800';
+        document.getElementById('paymentSection').classList.add('hidden');
+        document.getElementById('exemptSection').classList.add('hidden');
+      } else if (data.type === 'Lifetime') {
+        statusEl.className = 'font-bold text-sm px-2 py-1 rounded bg-blue-100 text-blue-800';
+        document.getElementById('paymentSection').classList.add('hidden');
+        document.getElementById('exemptSection').classList.remove('hidden');
+      } else {
+        statusEl.className = 'font-bold text-sm px-2 py-1 rounded bg-red-100 text-red-800';
+        document.getElementById('paymentSection').classList.remove('hidden');
+        document.getElementById('exemptSection').classList.add('hidden');
+
+        const upiUrl = `upi://pay?pa=161902000001001@iob&pn=M/S.%20AVS%20GORIMEDU%20BROTHERS%20PETANQUE%20CLUB&am=500&cu=INR&tn=Monthly_Subscription`;
+        document.getElementById('gpayBtn').href = upiUrl;
+      }
+    }
+
+    function submitPaymentProof() {
+      const utr = document.getElementById('utrInput').value.trim();
+      if (!utr) return;
+
+      const formData = new FormData();
+      formData.append('action', 'verifyPayment');
+      formData.append('phone', loggedInUser.phone);
+      formData.append('month', 'Current Month');
+      formData.append('utr', utr);
+
+      fetch(SCRIPT_URL, { method: 'POST', body: formData })
+        .then((res) => res.text())
+        .then(() => {
+          alert('Payment details submitted successfully!');
+          location.reload();
+        })
+        .catch((error) => {
+          console.error(error);
+          alert('Unable to submit payment proof. Please try again.');
+        });
+    }
+
+    function logout() {
+      localStorage.removeItem('memberPhone');
+      localStorage.removeItem('isMember');
+      location.reload();
+    }
+
+    window.onload = () => {
+      const savedPhone = localStorage.getItem('memberPhone');
+      if (savedPhone) {
+        document.getElementById('loginPhone').value = savedPhone;
+        checkMemberStatus();
+      }
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    };
+  </script>
+</body>
+</html>
