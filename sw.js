@@ -1,10 +1,12 @@
-const CACHE_NAME = 'avs-club-pwa-v1';
+const CACHE_NAME = 'avs-club-pwa-v2';
 const APP_SHELL = [
   './',
   './index.html',
   './dashboard.html',
+  './gallery-data.js',
   './manifest.json',
-  './public/avs-logo.png'
+  './public/avs-logo.png',
+  './public/event1-2.jpeg'
 ];
 
 self.addEventListener('install', (event) => {
